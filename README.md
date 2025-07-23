@@ -1,2 +1,2 @@
 # modernizacion
-Migracion de MueblesSto
+Migracion de MueblesStgo
