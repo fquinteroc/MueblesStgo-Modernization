@@ -7,6 +7,18 @@ class DataValidator:
     @staticmethod
     def validate_fecha(fecha):
         """Valida que la fecha esté en formato yyyy/MM/dd"""
+        if not fecha or not isinstance(fecha, str):
+            raise BadRequest('Fecha inválida: None. Debe estar en formato yyyy/MM/dd')
+        
+        fecha = fecha.strip()
+        if fecha == '':
+            raise BadRequest('Fecha inválida: . Debe estar en formato yyyy/MM/dd')
+        
+        # Validar formato exacto con regex
+        pattern = r'^\d{4}/\d{2}/\d{2}$'
+        if not re.match(pattern, fecha):
+            raise BadRequest(f'Fecha inválida: {fecha}. Debe estar en formato yyyy/MM/dd')
+        
         try:
             datetime.strptime(fecha, '%Y/%m/%d')
             return True
@@ -16,6 +28,18 @@ class DataValidator:
     @staticmethod
     def validate_hora(hora):
         """Valida que la hora esté en formato HH:mm"""
+        if not hora or not isinstance(hora, str):
+            raise BadRequest('Hora inválida: None. Debe estar en formato HH:mm')
+        
+        hora = hora.strip()
+        if hora == '':
+            raise BadRequest('Hora inválida: . Debe estar en formato HH:mm')
+        
+        # Validar formato exacto con regex
+        pattern = r'^\d{2}:\d{2}$'
+        if not re.match(pattern, hora):
+            raise BadRequest(f'Hora inválida: {hora}. Debe estar en formato HH:mm')
+        
         try:
             datetime.strptime(hora, '%H:%M')
             return True
@@ -25,12 +49,12 @@ class DataValidator:
     @staticmethod
     def validate_rut(rut):
         """Valida que el RUT esté en formato chileno abreviado (xxxxxxxx-x)"""
-        if not rut or not isinstance(rut, str):
+        if not rut or not isinstance(rut, str) or rut.strip() == '':
             raise BadRequest('RUT no puede estar vacío')
         
         # Formato: números-dígito verificador
         pattern = r'^\d{1,8}-[0-9Kk]$'
-        if not re.match(pattern, rut):
+        if not re.match(pattern, rut.strip()):
             raise BadRequest(f'RUT inválido: {rut}. Debe estar en formato xxxxxxxx-x')
         
         return True
@@ -56,7 +80,7 @@ class DataValidator:
         if not file:
             raise BadRequest('No se ha proporcionado ningún archivo')
         
-        if file.filename == '':
+        if not hasattr(file, 'filename') or file.filename == '':
             raise BadRequest('No se ha seleccionado ningún archivo')
         
         if file.filename.upper() != 'DATA.TXT':

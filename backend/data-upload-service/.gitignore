@@ -160,3 +160,21 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 .idea/
 deployment/secrets.yaml
+
+# Archivos de cobertura y pruebas
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+
+# Archivos de pytest
+.pytest_cache/
+.cache/
+
+# Reportes de pruebas
+test-results/
+junit.xml
+
+# Archivos temporales de pruebas
+/uploads/
+*.log
