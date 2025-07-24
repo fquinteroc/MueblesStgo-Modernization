@@ -1,0 +1,15 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start Data Upload Service",
+			"type": "shell",
+			"command": "cd /Users/fabianquintero/Documents/UniAndes/Modernizacion/Proyecto/Modernizaciòn/tingeso/backend/data-upload-service && pipenv install && pipenv run python -m flask run --debug",
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": [
+				"$eslint-stylish"
+			]
+		}
+	]
+}
