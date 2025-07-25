@@ -1,0 +1,29 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
+flask-cors = "*"
+sqlalchemy = "*"
+pymysql = "*"
+python-dotenv = "*"
+werkzeug = "*"
+marshmallow = "*"
+marshmallow-sqlalchemy = "*"
+cryptography = "*"
+
+[dev-packages]
+pytest = "*"
+pytest-cov = "*"
+pytest-flask = "*"
+pytest-env = "*"
+black = "*"
+flake8 = "*"
+isort = "*"
+
+[requires]
+python_version = "3.12"

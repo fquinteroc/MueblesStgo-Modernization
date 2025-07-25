@@ -1,0 +1,60 @@
+services:
+  # Base de datos MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: mueblesstgo_mysql_employees
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mueblesstgo_employees
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppassword
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql_employees_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - mueblesstgo_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+      start_period: 40s
+
+  # Microservicio de gestión de empleados
+  employee-management-service:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: employee_management_service
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=mysql+pymysql://appuser:apppassword@mysql:3306/mueblesstgo_employees
+      - SECRET_KEY=your-secret-key-change-in-production
+      - CORS_ORIGINS=http://localhost:4200,http://localhost:3000
+      - LOG_LEVEL=INFO
+      - EMPLOYEES_PER_PAGE=50
+      - MAX_EMPLOYEES_PER_PAGE=200
+    ports:
+      - "5002:5000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - mueblesstgo_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  mysql_employees_data:
+    driver: local
+
+networks:
+  mueblesstgo_network:
+    driver: bridge
