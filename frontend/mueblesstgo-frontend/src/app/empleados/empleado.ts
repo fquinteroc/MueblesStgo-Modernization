@@ -1,27 +1,39 @@
-export class Empleado {
-  id:number;
+export interface Empleado {
   rut: string;
   apellidos: string;
   nombres: string;
   fecha_nacimiento: string;
-  categoria: string;
+  categoria: 'A' | 'B' | 'C';
   fecha_ingreso: string;
-  constructor(
-    id: number,
-    rut: string,
-    apellidos: string,
-    nombres: string,
-    fecha_nacimiento: string,
-    categoria: string,
-    fecha_ingreso: string
-  ) 
-  {
-    this.id = id;
-    this.rut = rut;
-    this.apellidos = apellidos;
-    this.nombres = nombres;
-    this.fecha_nacimiento = fecha_nacimiento;
-    this.categoria = categoria;
-    this.fecha_ingreso = fecha_ingreso;
-  }
+  activo?: boolean;
+  fecha_creacion?: string;
+  fecha_actualizacion?: string;
+}
+
+export interface EmpleadoRequest {
+  rut: string;
+  apellidos: string;
+  nombres: string;
+  fecha_nacimiento: string;
+  categoria: 'A' | 'B' | 'C';
+  fecha_ingreso: string;
+}
+
+export interface ApiResponse<T> {
+  success: boolean;
+  message?: string;
+  data?: T;
+  error?: string;
+}
+
+export interface EmployeeListResponse {
+  employees: Empleado[];
+  pagination: {
+    page: number;
+    per_page: number;
+    total: number;
+    pages: number;
+    has_next: boolean;
+    has_prev: boolean;
+  };
 }

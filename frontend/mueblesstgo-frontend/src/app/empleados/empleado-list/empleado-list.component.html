@@ -1,32 +1,219 @@
-<div class="header-bar">
-  <span class="logo">MueblesStgo</span>
-  <div>
-    <button class="menu-btn" (click)="volverMenu()">Volver al menú principal</button>
+<header class="app-header">
+  <div class="container">
+    <div class="header-content flex justify-between items-center">
+      <div>
+        <h1 class="brand-logo">MueblesStgo</h1>
+        <p class="header-subtitle">Gestión de Empleados</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-primary" (click)="volverCrear()">
+          <i class="fas fa-user-plus"></i>
+          Nuevo Empleado
+        </button>
+        <button class="btn btn-secondary" (click)="volverMenu()">
+          <i class="fas fa-home"></i>
+          Menú Principal
+        </button>
+      </div>
+    </div>
   </div>
-</div>
+</header>
 
-<div class="container mt-4">
-  <h2>Lista de Empleados</h2>
-  <table class="table table-bordered table-striped">
-    <thead>
-      <tr>
-        <th>RUT</th>
-        <th>Apellidos</th>
-        <th>Nombres</th>
-        <th>Fecha Nacimiento</th>
-        <th>Categoría</th>
-        <th>Fecha Ingreso</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let empleado of empleados">
-        <td>{{ empleado.rut }}</td>
-        <td>{{ empleado.apellidos }}</td>
-        <td>{{ empleado.nombres }}</td>
-        <td>{{ empleado.fecha_nacimiento }}</td>
-        <td>{{ empleado.categoria }}</td>
-        <td>{{ empleado.fecha_ingreso }}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<!-- Contenido principal -->
+<main class="main-content">
+  <div class="container">
+    <!-- Hero Section -->
+    <section class="hero-section animate-fade-in">
+      <div class="hero-content text-center">
+        <h1 class="text-h2">Lista de Empleados</h1>
+        <p class="text-body-lg">Gestiona y consulta la información de todos los empleados registrados</p>
+      </div>
+    </section>
+
+    <!-- Loading state moderno -->
+    <section *ngIf="isLoading" class="loading-section animate-fade-in text-center">
+      <div class="loading-wrapper">
+        <div class="loading-spinner"></div>
+        <h3 class="text-h5 mt-6">Cargando empleados...</h3>
+        <p class="text-caption">Por favor espera mientras obtenemos la información</p>
+      </div>
+    </section>
+
+    <section *ngIf="errorMessage" class="animate-slide-up">
+      <div class="alert alert-error">
+        <i class="fas fa-exclamation-triangle"></i>
+        <div>
+          <h4 class="text-label">Error al cargar empleados</h4>
+          <p>{{ errorMessage }}</p>
+        </div>
+      </div>
+    </section>
+
+    <section *ngIf="!isLoading && !errorMessage" class="employees-section animate-slide-up">
+      <div class="card card-elevated">
+        <div class="card-header">
+          <div class="flex justify-between items-center">
+            <h3 class="text-h5">Empleados registrados</h3>
+            <div class="stats-wrapper">
+              <span class="badge badge-primary">{{ totalEmployees }} total</span>
+              <span class="badge badge-success">{{ empleados.length }} mostrados</span>
+            </div>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th>
+                  <div class="th-content">
+                    <i class="fas fa-id-card text-primary-600"></i>
+                    RUT
+                  </div>
+                </th>
+                <th>
+                  <div class="th-content">
+                    <i class="fas fa-user text-primary-600"></i>
+                    Apellidos
+                  </div>
+                </th>
+                <th>
+                  <div class="th-content">
+                    <i class="fas fa-user text-primary-600"></i>
+                    Nombres
+                  </div>
+                </th>
+                <th>
+                  <div class="th-content">
+                    <i class="fas fa-calendar text-primary-600"></i>
+                    F. Nacimiento
+                  </div>
+                </th>
+                <th>
+                  <div class="th-content">
+                    <i class="fas fa-tag text-primary-600"></i>
+                    Categoría
+                  </div>
+                </th>
+                <th>
+                  <div class="th-content">
+                    <i class="fas fa-calendar-plus text-primary-600"></i>
+                    F. Ingreso
+                  </div>
+                </th>
+                <th>
+                  <div class="th-content">
+                    <i class="fas fa-toggle-on text-primary-600"></i>
+                    Estado
+                  </div>
+                </th>
+                <th>
+                  <div class="th-content">
+                    <i class="fas fa-cogs text-primary-600"></i>
+                    Acciones
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let empleado of empleados" 
+                  [class.inactive-row]="!empleado.activo"
+                  class="table-row">
+                <td>
+                  <span class="employee-rut">{{ empleado.rut }}</span>
+                </td>
+                <td>
+                  <span class="employee-name">{{ empleado.apellidos }}</span>
+                </td>
+                <td>
+                  <span class="employee-name">{{ empleado.nombres }}</span>
+                </td>
+                <td>
+                  <span class="employee-date">{{ empleado.fecha_nacimiento }}</span>
+                </td>
+                <td>
+                  <span class="category-badge" [class]="'category-' + empleado.categoria.toLowerCase()">
+                    {{ empleado.categoria }}
+                  </span>
+                </td>
+                <td>
+                  <span class="employee-date">{{ empleado.fecha_ingreso }}</span>
+                </td>
+                <td>
+                  <span class="status-badge" [class]="empleado.activo ? 'status-active' : 'status-inactive'">
+                    <i class="fas" [class]="empleado.activo ? 'fa-check-circle' : 'fa-times-circle'"></i>
+                    {{ empleado.activo ? 'Activo' : 'Inactivo' }}
+                  </span>
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <button 
+                      *ngIf="empleado.activo" 
+                      class="btn btn-sm btn-error" 
+                      (click)="eliminarEmpleado(empleado.rut)"
+                      title="Eliminar empleado"
+                    >
+                      <i class="fas fa-trash"></i>
+                      Eliminar
+                    </button>
+                    <button 
+                      *ngIf="!empleado.activo" 
+                      class="btn btn-sm btn-success" 
+                      (click)="activarEmpleado(empleado.rut)"
+                      title="Activar empleado"
+                    >
+                      <i class="fas fa-check"></i>
+                      Activar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section *ngIf="totalPages > 1" class="pagination-section animate-slide-up">
+      <div class="pagination-wrapper">
+        <button 
+          class="btn btn-secondary" 
+          (click)="prevPage()" 
+          [disabled]="!hasPrev"
+          [class.btn-ghost]="!hasPrev"
+        >
+          <i class="fas fa-chevron-left"></i>
+          Anterior
+        </button>
+        
+        <div class="page-numbers">
+          <button 
+            *ngFor="let page of pageNumbers" 
+            class="page-btn" 
+            [class.active]="page === currentPage"
+            (click)="goToPage(page)"
+          >
+            {{ page }}
+          </button>
+        </div>
+        
+        <button 
+          class="btn btn-secondary" 
+          (click)="nextPage()" 
+          [disabled]="!hasNext"
+          [class.btn-ghost]="!hasNext"
+        >
+          Siguiente
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <!-- Información de paginación -->
+      <div class="pagination-info">
+        <p class="text-caption text-center">
+          Mostrando <strong>{{ empleados.length }}</strong> empleados de <strong>{{ totalEmployees }}</strong> total
+          • Página <strong>{{ currentPage }}</strong> de <strong>{{ totalPages }}</strong>
+        </p>
+      </div>
+    </section>
+  </div>
+</main>

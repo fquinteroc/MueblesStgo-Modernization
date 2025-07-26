@@ -1,19 +1,154 @@
-<!-- Banner superior -->
-<div class="header-bar">
-  <span class="logo">MueblesStgo</span>
-</div>
-
-<!-- Menú principal con dos opciones -->
-<div class="main-menu-box">
-  <h1 class="menu-title">Menú principal</h1>
-  <div class="menu-grid">
-    <div class="menu-card" (click)="navigateTo('data-upload')">
-      <img src="assets/data-icon.png" alt="Cargar DATA.txt" class="menu-icon" />
-      <div class="menu-label">Cargar DATA.txt</div>
-    </div>
-    <div class="menu-card" (click)="navigateTo('empleados')">
-      <img src="assets/empleado-icon.png" alt="Ver empleados" class="menu-icon" />
-      <div class="menu-label">Ver empleados</div>
+<header class="app-header">
+  <div class="container">
+    <div class="header-content">
+      <h1 class="brand-logo">MueblesStgo</h1>
+      <p class="header-subtitle">Sistema de Gestión de Empleados y Asistencia</p>
     </div>
   </div>
-</div>
+</header>
+
+<!-- Contenido principal -->
+<main class="main-content">
+  <div class="container">
+    <!-- Hero Section -->
+    <section class="hero-section animate-fade-in">
+      <div class="hero-content">
+        <h1 class="text-h1">Bienvenido a MueblesStgo</h1>
+        <p class="text-body-lg text-center">Selecciona una opción para comenzar a gestionar empleados y datos de asistencia</p>
+      </div>
+    </section>
+    
+    <!-- Sección de Empleados -->
+    <section class="feature-section animate-slide-up">
+      <div class="section-header">
+        <h2 class="text-h3 flex items-center gap-4">
+          <div class="icon-container primary">
+            <i class="fas fa-users"></i>
+          </div>
+          Gestión de Empleados
+        </h2>
+        <p class="text-body">Administra la información completa de tu equipo de trabajo</p>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card card-interactive" (click)="navigateTo('empleados')">
+          <div class="card-body">
+            <div class="feature-icon success">
+              <i class="fas fa-list"></i>
+            </div>
+            <h3 class="text-h5">Ver Empleados</h3>
+            <p class="text-caption">Consulta la lista completa de empleados registrados con toda su información</p>
+            <div class="card-action">
+              <span class="action-text">Ir a empleados</span>
+              <i class="fas fa-arrow-right"></i>
+            </div>
+          </div>
+        </div>
+        
+        <div class="feature-card card-interactive" (click)="navigateTo('empleados/crear')">
+          <div class="card-body">
+            <div class="feature-icon success">
+              <i class="fas fa-user-plus"></i>
+            </div>
+            <h3 class="text-h5">Crear Empleado</h3>
+            <p class="text-caption">Agrega un nuevo empleado al sistema con todos sus datos personales</p>
+            <div class="card-action">
+              <span class="action-text">Crear nuevo</span>
+              <i class="fas fa-arrow-right"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Datos de Asistencia -->
+    <section class="feature-section animate-slide-up">
+      <div class="section-header">
+        <h2 class="text-h3 flex items-center gap-4">
+          <div class="icon-container warning">
+            <i class="fas fa-clock"></i>
+          </div>
+          Control de Asistencia
+        </h2>
+        <p class="text-body">Gestiona y analiza los registros de asistencia de tus empleados</p>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card card-interactive" (click)="navigateTo('data-upload')">
+          <div class="card-body">
+            <div class="feature-icon warning">
+              <i class="fas fa-upload"></i>
+            </div>
+            <h3 class="text-h5">Subir Datos</h3>
+            <p class="text-caption">Carga archivos DATA.TXT con los registros de asistencia del personal</p>
+            <div class="card-action">
+              <span class="action-text">Cargar archivo</span>
+              <i class="fas fa-arrow-right"></i>
+            </div>
+          </div>
+        </div>
+        
+        <div class="feature-card card-interactive" (click)="navigateTo('data-list')">
+          <div class="card-body">
+            <div class="feature-icon info">
+              <i class="fas fa-table"></i>
+            </div>
+            <h3 class="text-h5">Ver Registros</h3>
+            <p class="text-caption">Consulta y analiza todos los registros de asistencia procesados</p>
+            <div class="card-action">
+              <span class="action-text">Ver datos</span>
+              <i class="fas fa-arrow-right"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Información del sistema -->
+    <section class="system-info-section animate-bounce-in">
+      <div class="info-card-modern">
+        <div class="info-header">
+          <div class="info-icon">
+            <i class="fas fa-info-circle"></i>
+          </div>
+          <div class="info-content">
+            <h3 class="text-h4">Sistema MueblesStgo</h3>
+            <p class="text-body">Plataforma integral diseñada para optimizar la gestión de recursos humanos</p>
+          </div>
+        </div>
+        
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-check">✓</div>
+            <div class="feature-details">
+              <h4 class="text-label">Gestión CRUD</h4>
+              <p class="text-caption">Operaciones completas sobre empleados</p>
+            </div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-check">✓</div>
+            <div class="feature-details">
+              <h4 class="text-label">Control de Asistencia</h4>
+              <p class="text-caption">Seguimiento detallado de horarios</p>
+            </div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-check">✓</div>
+            <div class="feature-details">
+              <h4 class="text-label">Carga de Datos</h4>
+              <p class="text-caption">Importación automática de archivos</p>
+            </div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-check">✓</div>
+            <div class="feature-details">
+              <h4 class="text-label">Interfaz Moderna</h4>
+              <p class="text-caption">Diseño intuitivo y responsivo</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>

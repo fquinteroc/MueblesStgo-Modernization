@@ -1,7 +1,7 @@
-const baseUrl = 
-''
-
 export const environment = {
-    production: false,
-    baseUrl
+  production: false,
+  apiUrls: {
+    employeeService: 'http://localhost:5002/api',
+    dataUploadService: 'http://localhost:5001'
+  }
 };

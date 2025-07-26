@@ -1,21 +1,247 @@
-<div class="header-bar">
-  <span class="logo">MueblesStgo</span>
-  <div>
-    <button class="menu-btn" (click)="volverMenu()">Volver al menú principal</button>
-    <button class="menu-btn" style="margin-left: 1rem;" routerLink="/data-last">Ver el último Data.txt cargado</button>
+<header class="app-header">
+  <div class="container">
+    <div class="header-content flex justify-between items-center">
+      <div>
+        <h1 class="brand-logo">MueblesStgo</h1>
+        <p class="header-subtitle">Gestión de Datos</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-secondary" (click)="goToDataList()">
+          <i class="fas fa-table"></i>
+          Ver Datos
+        </button>
+        <button class="btn btn-ghost" (click)="volverMenu()">
+          <i class="fas fa-home"></i>
+          Menú Principal
+        </button>
+      </div>
+    </div>
   </div>
-</div>
+</header>
 
-<h1 style="margin-left: 1rem;">Cargar DATA.TXT</h1>
+<!-- Contenido principal -->
+<main class="main-content">
+  <div class="container">
+    <!-- Hero Section -->
+    <section class="hero-section animate-fade-in">
+      <div class="hero-content text-center">
+        <div class="icon-wrapper-lg mx-auto mb-6">
+          <i class="fas fa-upload"></i>
+        </div>
+        <h1 class="text-h2">Cargar Archivo DATA.TXT</h1>
+        <p class="text-body-lg">Sube los datos de asistencia de empleados al sistema</p>
+      </div>
+    </section>
 
-<div class="upload-box">
-  <h2>Cargar el archivo de datos</h2>
-  <input type="file" (change)="onFileSelected($event)" accept=".txt" />
-  <button class="upload-btn" (click)="onUpload()">Cargar el archivo a la Base de Datos</button>
-</div>
+    <!-- Upload Section -->
+    <section class="upload-section animate-slide-up">
+      <div class="upload-container">
+        <div class="card card-elevated">
+          <div class="card-header">
+            <h3 class="text-h5 flex items-center gap-3">
+              <i class="fas fa-file-upload text-primary-600"></i>
+              Cargar archivo de datos
+            </h3>
+            <p class="text-caption">Selecciona un archivo DATA.TXT para procesar</p>
+          </div>
+          
+          <div class="card-body">
+            <!-- Área de selección de archivo -->
+            <div class="file-upload-area">
+              <input 
+                id="fileInput"
+                type="file" 
+                (change)="onFileSelected($event)" 
+                accept=".txt"
+                [disabled]="isUploading"
+                class="file-input-hidden"
+              />
+              <label for="fileInput" class="file-upload-label" [class.has-file]="selectedFile">
+                <div class="file-upload-content">
+                  <i class="fas fa-cloud-upload-alt file-upload-icon"></i>
+                  <div class="file-upload-text">
+                    <span *ngIf="!selectedFile" class="text-h6">Arrastra el archivo aquí o haz clic para seleccionar</span>
+                    <span *ngIf="selectedFile" class="text-h6 text-success-600">
+                      <i class="fas fa-check-circle"></i>
+                      {{ selectedFile.name }}
+                    </span>
+                    <p class="text-caption">Solo archivos .txt (máximo 10MB)</p>
+                  </div>
+                </div>
+              </label>
+            </div>
+            
+            <!-- Botón de carga -->
+            <div class="upload-actions">
+              <button 
+                class="btn btn-primary btn-lg w-full"
+                (click)="onUpload()"
+                [disabled]="!canUpload"
+                [class.loading]="isUploading"
+              >
+                <span *ngIf="!isUploading" class="flex items-center justify-center gap-2">
+                  <i class="fas fa-database"></i>
+                  Cargar archivo a la Base de Datos
+                </span>
+                <span *ngIf="isUploading" class="flex items-center justify-center gap-2">
+                  <div class="loading-spinner-sm"></div>
+                  Procesando archivo...
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
 
-<hr />
+        <!-- Mensajes de estado -->
+        <div class="status-messages">
+          <!-- Error message -->
+          <div *ngIf="errorMessage" class="alert alert-error animate-slide-up">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div>
+              <h4 class="text-label">Error al procesar archivo</h4>
+              <p>{{ errorMessage }}</p>
+            </div>
+          </div>
+          
+          <!-- Respuesta de éxito -->
+          <div *ngIf="hasSuccessResponse" class="success-section animate-slide-up">
+            <div class="alert alert-success">
+              <i class="fas fa-check-circle"></i>
+              <div>
+                <h4 class="text-label">¡Archivo cargado exitosamente!</h4>
+                <p>{{ uploadResponse?.message }}</p>
+              </div>
+            </div>
+            
+            <!-- Estadísticas de carga -->
+            <div *ngIf="uploadResponse?.total_records" class="upload-stats">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="text-h6">Resumen de procesamiento</h4>
+                </div>
+                <div class="card-body">
+                  <div class="stats-grid">
+                    <div class="stat-item">
+                      <div class="stat-number text-h4 text-primary-600">{{ uploadResponse?.total_records }}</div>
+                      <div class="stat-label">Total de registros</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-number text-h4 text-success-600">{{ uploadResponse?.valid_records }}</div>
+                      <div class="stat-label">Registros válidos</div>
+                    </div>
+                    <div *ngIf="(uploadResponse?.invalid_records || 0) > 0" class="stat-item">
+                      <div class="stat-number text-h4 text-warning-600">{{ uploadResponse?.invalid_records }}</div>
+                      <div class="stat-label">Registros inválidos</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Lista de errores si los hay -->
+            <div *ngIf="(uploadResponse?.errors?.length || 0) > 0" class="error-details">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="text-h6 flex items-center gap-2">
+                    <i class="fas fa-exclamation-triangle text-warning-600"></i>
+                    Errores encontrados
+                  </h4>
+                </div>
+                <div class="card-body">
+                  <ul class="error-list">
+                    <li *ngFor="let error of uploadResponse?.errors || []" class="error-item">
+                      <i class="fas fa-times-circle text-error"></i>
+                      {{ error }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Respuesta de error del servidor -->
+          <div *ngIf="hasErrorResponse" class="error-section animate-slide-up">
+            <div class="alert alert-error">
+              <i class="fas fa-exclamation-triangle"></i>
+              <div>
+                <h4 class="text-label">Error del servidor</h4>
+                <p>{{ uploadResponse?.message }}</p>
+              </div>
+            </div>
+            
+            <div *ngIf="(uploadResponse?.errors?.length || 0) > 0" class="error-details">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="text-h6">Detalles del error</h4>
+                </div>
+                <div class="card-body">
+                  <ul class="error-list">
+                    <li *ngFor="let error of uploadResponse?.errors || []" class="error-item">
+                      <i class="fas fa-times-circle text-error"></i>
+                      {{ error }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<div class="note-box">
-  <span>Recuerde que el nombre del archivo debe ser "Data.txt"!</span>
-</div>
+    <!-- Instrucciones -->
+    <section class="instructions-section animate-slide-up">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="text-h5 flex items-center gap-3">
+            <i class="fas fa-info-circle text-info-600"></i>
+            Instrucciones importantes
+          </h3>
+        </div>
+        <div class="card-body">
+          <div class="instructions-grid">
+            <div class="instruction-item">
+              <div class="instruction-icon">
+                <i class="fas fa-file-alt text-primary-600"></i>
+              </div>
+              <div class="instruction-content">
+                <h4 class="text-label">Nombre del archivo</h4>
+                <p>El archivo debe llamarse exactamente <code class="code-highlight">"DATA.TXT"</code></p>
+              </div>
+            </div>
+            
+            <div class="instruction-item">
+              <div class="instruction-icon">
+                <i class="fas fa-list-ol text-secondary-700"></i>
+              </div>
+              <div class="instruction-content">
+                <h4 class="text-label">Formato requerido</h4>
+                <p>Cada línea debe seguir el formato: <code class="code-highlight">RUT;FECHA;HORA</code></p>
+              </div>
+            </div>
+            
+            <div class="instruction-item">
+              <div class="instruction-icon">
+                <i class="fas fa-code text-accent-1"></i>
+              </div>
+              <div class="instruction-content">
+                <h4 class="text-label">Ejemplo de formato</h4>
+                <p><code class="code-highlight">12345678-9;2023/07/25;08:30</code></p>
+              </div>
+            </div>
+            
+            <div class="instruction-item">
+              <div class="instruction-icon">
+                <i class="fas fa-shield-alt text-success-600"></i>
+              </div>
+              <div class="instruction-content">
+                <h4 class="text-label">Tipo de archivo</h4>
+                <p>Solo se aceptan archivos de texto con extensión <code class="code-highlight">.txt</code></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>

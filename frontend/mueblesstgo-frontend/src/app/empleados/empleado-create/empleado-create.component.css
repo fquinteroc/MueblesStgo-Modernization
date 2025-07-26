@@ -1,0 +1,311 @@
+/* ===== EMPLEADO CREATE - DESIGN SYSTEM STYLES ===== */
+
+/* === HEADER ACTIONS === */
+.header-actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+@media (max-width: 768px) {
+  .header-actions {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+}
+
+/* === FORM SECTION === */
+.form-section {
+  margin-bottom: var(--space-8);
+}
+
+.form-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.form-card {
+  margin-bottom: var(--space-8);
+}
+
+/* === MODERN FORM === */
+.modern-form {
+  width: 100%;
+}
+
+.form-section-group {
+  margin-bottom: var(--space-10);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-neutral-200);
+}
+
+.form-section-group:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-3);
+  border-bottom: 2px solid var(--color-primary-100);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-6);
+}
+
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+}
+
+/* === FORM FIELDS === */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.form-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.form-label.required::after {
+  content: ' *';
+  color: var(--color-error);
+  font-weight: var(--font-weight-bold);
+}
+
+/* === FIELD FEEDBACK === */
+.field-error {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background-color: var(--color-error-bg);
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  margin-top: var(--space-2);
+  animation: slideDown var(--transition-duration-slow) var(--easing);
+}
+
+.field-hint {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  margin-top: var(--space-1);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === FORM ACTIONS === */
+.form-actions {
+  display: flex;
+  gap: var(--space-4);
+  padding-top: var(--space-8);
+  border-top: 2px solid var(--color-neutral-100);
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .form-actions {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  
+  .form-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* === LOADING SPINNER === */
+.loading-spinner-sm {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: var(--radius-full);
+  animation: spin 1s linear infinite;
+  margin-right: var(--space-2);
+}
+
+/* === INFO PANEL === */
+.info-panel {
+  margin-top: var(--space-8);
+}
+
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--color-success);
+  transition: all var(--transition-duration) var(--easing);
+}
+
+.info-item:hover {
+  background-color: var(--color-success-bg);
+  transform: translateX(4px);
+}
+
+.info-item i {
+  font-size: var(--font-size-sm);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.info-item span {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-normal);
+}
+
+/* === INPUT ENHANCEMENTS === */
+.input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-100);
+  transform: translateY(-1px);
+}
+
+.input:invalid {
+  border-color: var(--color-error);
+}
+
+.input:invalid:focus {
+  box-shadow: 0 0 0 3px var(--color-error-bg);
+}
+
+/* === SELECT STYLING === */
+select.input {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right var(--space-3) center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: var(--space-10);
+  appearance: none;
+}
+
+/* === CARD ENHANCEMENTS === */
+.form-card .card-header {
+  background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-primary-100) 100%);
+  border-bottom: 2px solid var(--color-primary-200);
+}
+
+.form-card:hover {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-2px);
+}
+
+/* === BUTTON ENHANCEMENTS === */
+.btn-lg {
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--font-size-base);
+  min-width: 160px;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-primary:disabled {
+  background-color: var(--color-neutral-400);
+  border-color: var(--color-neutral-400);
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 1024px) {
+  .form-container {
+    max-width: 100%;
+    padding: 0 var(--space-4);
+  }
+  
+  .section-title {
+    font-size: var(--font-size-base);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: var(--space-6) 0;
+  }
+  
+  .hero-content .text-h2 {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .form-grid {
+    gap: var(--space-4);
+  }
+  
+  .form-section-group {
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+  }
+}
+
+/* === ACCESSIBILITY ENHANCEMENTS === */
+.form-label:focus-within {
+  color: var(--color-primary);
+}
+
+.input:focus + .field-hint {
+  color: var(--color-primary);
+}
+
+/* === ANIMATION DELAYS === */
+.form-section-group:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.form-section-group:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.form-section-group:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.form-actions {
+  animation: slideUp var(--transition-duration-slow) var(--easing) 0.4s both;
+}
+
+.info-panel {
+  animation: slideUp var(--transition-duration-slow) var(--easing) 0.5s both;
+}

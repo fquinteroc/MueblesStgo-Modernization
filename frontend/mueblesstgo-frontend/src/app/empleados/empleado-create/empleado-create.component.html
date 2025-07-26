@@ -1,0 +1,284 @@
+<!-- Header moderno -->
+<header class="app-header">
+  <div class="container">
+    <div class="header-content flex justify-between items-center">
+      <div>
+        <h1 class="brand-logo">MueblesStgo</h1>
+        <p class="header-subtitle">Crear Nuevo Empleado</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-secondary" (click)="volverListado()">
+          <i class="fas fa-list"></i>
+          Ver Empleados
+        </button>
+        <button class="btn btn-ghost" (click)="volverMenu()">
+          <i class="fas fa-home"></i>
+          Menú Principal
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Contenido principal -->
+<main class="main-content">
+  <div class="container">
+    <!-- Hero Section -->
+    <section class="hero-section animate-fade-in">
+      <div class="hero-content text-center">
+        <h1 class="text-h2">Crear Nuevo Empleado</h1>
+        <p class="text-body-lg">Completa los datos del empleado para agregarlo al sistema</p>
+      </div>
+    </section>
+
+    <!-- Formulario moderno -->
+    <section class="form-section animate-slide-up">
+      <div class="form-container">
+        <!-- Mensajes de estado -->
+        <div *ngIf="successMessage" class="alert alert-success animate-slide-up">
+          <i class="fas fa-check-circle"></i>
+          <div>
+            <h4 class="text-label">¡Empleado creado exitosamente!</h4>
+            <p>{{ successMessage }}</p>
+          </div>
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-error animate-slide-up">
+          <i class="fas fa-exclamation-triangle"></i>
+          <div>
+            <h4 class="text-label">Error al crear empleado</h4>
+            <p>{{ errorMessage }}</p>
+          </div>
+        </div>
+
+        <!-- Card del formulario -->
+        <div class="card form-card">
+          <div class="card-header">
+            <h3 class="text-h5 flex items-center gap-3">
+              <div class="icon-wrapper">
+                <i class="fas fa-user-plus"></i>
+              </div>
+              Datos del Empleado
+            </h3>
+            <p class="text-caption">Los campos marcados con * son obligatorios</p>
+          </div>
+
+          <div class="card-body">
+            <form (ngSubmit)="onSubmit()" #empleadoForm="ngForm" class="modern-form">
+              <!-- Sección: Identificación -->
+              <div class="form-section-group">
+                <h4 class="section-title">
+                  <i class="fas fa-id-card text-primary-600"></i>
+                  Identificación
+                </h4>
+                <div class="form-grid">
+                  <div class="form-field">
+                    <label for="rut" class="form-label required">RUT</label>
+                    <input
+                      type="text"
+                      id="rut"
+                      name="rut"
+                      class="input"
+                      [(ngModel)]="empleado.rut"
+                      (blur)="formatRut()"
+                      placeholder="12.345.678-9"
+                      required
+                      #rutInput="ngModel"
+                    />
+                    <div *ngIf="rutInput.invalid && rutInput.touched" class="field-error">
+                      <i class="fas fa-exclamation-circle"></i>
+                      El RUT es obligatorio y debe tener formato válido.
+                    </div>
+                    <div class="field-hint">
+                      <i class="fas fa-info-circle"></i>
+                      Formato: 12345678-9
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="categoria" class="form-label required">Categoría</label>
+                    <select
+                      id="categoria"
+                      name="categoria"
+                      class="input"
+                      [(ngModel)]="empleado.categoria"
+                      required
+                      #categoriaInput="ngModel"
+                    >
+                      <option value="">Selecciona una categoría</option>
+                      <option value="A">Categoría A - Gerencial</option>
+                      <option value="B">Categoría B - Supervisión</option>
+                      <option value="C">Categoría C - Operativo</option>
+                    </select>
+                    <div *ngIf="categoriaInput.invalid && categoriaInput.touched" class="field-error">
+                      <i class="fas fa-exclamation-circle"></i>
+                      Debes seleccionar una categoría.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sección: Datos Personales -->
+              <div class="form-section-group">
+                <h4 class="section-title">
+                  <i class="fas fa-user text-primary-600"></i>
+                  Datos Personales
+                </h4>
+                <div class="form-grid">
+                  <div class="form-field">
+                    <label for="nombres" class="form-label required">Nombres</label>
+                    <input
+                      type="text"
+                      id="nombres"
+                      name="nombres"
+                      class="input"
+                      [(ngModel)]="empleado.nombres"
+                      placeholder="Juan Carlos"
+                      required
+                      #nombresInput="ngModel"
+                    />
+                    <div *ngIf="nombresInput.invalid && nombresInput.touched" class="field-error">
+                      <i class="fas fa-exclamation-circle"></i>
+                      Los nombres son obligatorios.
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="apellidos" class="form-label required">Apellidos</label>
+                    <input
+                      type="text"
+                      id="apellidos"
+                      name="apellidos"
+                      class="input"
+                      [(ngModel)]="empleado.apellidos"
+                      placeholder="García López"
+                      required
+                      #apellidosInput="ngModel"
+                    />
+                    <div *ngIf="apellidosInput.invalid && apellidosInput.touched" class="field-error">
+                      <i class="fas fa-exclamation-circle"></i>
+                      Los apellidos son obligatorios.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sección: Fechas -->
+              <div class="form-section-group">
+                <h4 class="section-title">
+                  <i class="fas fa-calendar text-primary-600"></i>
+                  Fechas Importantes
+                </h4>
+                <div class="form-grid">
+                  <div class="form-field">
+                    <label for="fecha_nacimiento" class="form-label required">Fecha de Nacimiento</label>
+                    <input
+                      type="date"
+                      id="fecha_nacimiento"
+                      name="fecha_nacimiento"
+                      class="input"
+                      [(ngModel)]="empleado.fecha_nacimiento"
+                      required
+                      #fechaNacimientoInput="ngModel"
+                    />
+                    <div *ngIf="fechaNacimientoInput.invalid && fechaNacimientoInput.touched" class="field-error">
+                      <i class="fas fa-exclamation-circle"></i>
+                      La fecha de nacimiento es obligatoria.
+                    </div>
+                    <div class="field-hint">
+                      <i class="fas fa-info-circle"></i>
+                      El empleado debe ser mayor de edad
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="fecha_ingreso" class="form-label required">Fecha de Ingreso</label>
+                    <input
+                      type="date"
+                      id="fecha_ingreso"
+                      name="fecha_ingreso"
+                      class="input"
+                      [(ngModel)]="empleado.fecha_ingreso"
+                      required
+                      #fechaIngresoInput="ngModel"
+                    />
+                    <div *ngIf="fechaIngresoInput.invalid && fechaIngresoInput.touched" class="field-error">
+                      <i class="fas fa-exclamation-circle"></i>
+                      La fecha de ingreso es obligatoria.
+                    </div>
+                    <div class="field-hint">
+                      <i class="fas fa-info-circle"></i>
+                      No puede ser una fecha futura
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Botones de acción -->
+              <div class="form-actions">
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-lg"
+                  [disabled]="empleadoForm.invalid || isSubmitting"
+                >
+                  <span *ngIf="isSubmitting" class="loading-spinner-sm"></span>
+                  <i *ngIf="!isSubmitting" class="fas fa-save"></i>
+                  {{ isSubmitting ? 'Creando empleado...' : 'Crear Empleado' }}
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-secondary btn-lg"
+                  (click)="resetForm()"
+                  [disabled]="isSubmitting"
+                >
+                  <i class="fas fa-undo"></i>
+                  Limpiar Formulario
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-ghost btn-lg"
+                  (click)="volverListado()"
+                >
+                  <i class="fas fa-times"></i>
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Información adicional -->
+        <div class="info-panel">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="text-h6 flex items-center gap-3 mb-4">
+                <i class="fas fa-lightbulb text-warning-600"></i>
+                Información Importante
+              </h4>
+              <div class="info-list">
+                <div class="info-item">
+                  <i class="fas fa-check-circle text-success-600"></i>
+                  <span>El RUT debe estar en formato válido chileno (ej: 12.345.678-9)</span>
+                </div>
+                <div class="info-item">
+                  <i class="fas fa-check-circle text-success-600"></i>
+                  <span>El empleado debe ser mayor de edad al momento del ingreso</span>
+                </div>
+                <div class="info-item">
+                  <i class="fas fa-check-circle text-success-600"></i>
+                  <span>Las fechas no pueden ser futuras</span>
+                </div>
+                <div class="info-item">
+                  <i class="fas fa-check-circle text-success-600"></i>
+                  <span>Todos los campos marcados con (*) son obligatorios</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>

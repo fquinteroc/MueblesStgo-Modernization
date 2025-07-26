@@ -1,0 +1,185 @@
+<!-- Header moderno -->
+<header class="app-header">
+  <div class="container">
+    <div class="header-content flex justify-between items-center">
+      <div>
+        <h1 class="brand-logo">MueblesStgo</h1>
+        <p class="header-subtitle">Datos de Asistencia</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-primary" (click)="goToUpload()">
+          <i class="fas fa-upload"></i>
+          Subir Datos
+        </button>
+        <button class="btn btn-secondary" (click)="volverMenu()">
+          <i class="fas fa-home"></i>
+          Menú Principal
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Contenido principal -->
+<main class="main-content">
+  <div class="container">
+    <!-- Hero Section -->
+    <section class="hero-section animate-fade-in">
+      <div class="hero-content text-center">
+        <div class="icon-wrapper-lg mx-auto mb-6">
+          <i class="fas fa-table"></i>
+        </div>
+        <h1 class="text-h2">Datos de Asistencia Cargados</h1>
+        <p class="text-body-lg">Consulta los registros de asistencia de empleados</p>
+      </div>
+    </section>
+
+    <!-- Loading state moderno -->
+    <section *ngIf="isLoading" class="loading-section animate-fade-in text-center">
+      <div class="loading-wrapper">
+        <div class="loading-spinner"></div>
+        <h3 class="text-h5 mt-6">Cargando datos de asistencia...</h3>
+        <p class="text-caption">Por favor espera mientras obtenemos la información</p>
+      </div>
+    </section>
+
+    <!-- Error message moderno -->
+    <section *ngIf="errorMessage" class="animate-slide-up">
+      <div class="alert alert-error">
+        <i class="fas fa-exclamation-triangle"></i>
+        <div>
+          <h4 class="text-label">Error al cargar datos</h4>
+          <p>{{ errorMessage }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Información de resultados -->
+    <section *ngIf="!isLoading && !errorMessage" class="results-info animate-slide-up">
+      <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i>
+        <div>
+          <h4 class="text-label">Resumen de datos</h4>
+          <div class="info-details">
+            <span><strong>Total de registros:</strong> {{ totalItems }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabla de datos moderna -->
+    <section *ngIf="!isLoading && !errorMessage && allData.length > 0" class="data-table-section animate-slide-up">
+      <div class="card card-elevated">
+        <div class="card-header">
+          <div class="flex justify-between items-center">
+            <h3 class="text-h5">Registros de asistencia</h3>
+            <div class="stats-wrapper">
+              <span class="badge badge-primary">{{ totalItems }} total</span>
+              <span class="badge badge-success">{{ paginatedData.length }} mostrados</span>
+            </div>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th>
+                  <div class="th-content">
+                    <i class="fas fa-id-card text-primary-600"></i>
+                    RUT
+                  </div>
+                </th>
+                <th>
+                  <div class="th-content">
+                    <i class="fas fa-calendar text-primary-600"></i>
+                    Fecha
+                  </div>
+                </th>
+                <th>
+                  <div class="th-content">
+                    <i class="fas fa-clock text-primary-600"></i>
+                    Hora
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let record of paginatedData" class="table-row">
+                <td>
+                  <span class="data-rut">{{ record.rut }}</span>
+                </td>
+                <td>
+                  <span class="data-date">{{ record.fecha }}</span>
+                </td>
+                <td>
+                  <span class="data-time">{{ record.hora }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Paginación moderna -->
+    <section *ngIf="totalPages > 1" class="pagination-section animate-slide-up">
+      <div class="pagination-wrapper">
+        <button 
+          class="btn btn-secondary" 
+          (click)="prevPage()" 
+          [disabled]="currentPage === 1"
+          [class.btn-ghost]="currentPage === 1"
+        >
+          <i class="fas fa-chevron-left"></i>
+          Anterior
+        </button>
+        
+        <div class="page-numbers">
+          <button 
+            *ngFor="let page of pageNumbers" 
+            class="page-btn" 
+            [class.active]="page === currentPage"
+            (click)="goToPage(page)"
+          >
+            {{ page }}
+          </button>
+        </div>
+        
+        <button 
+          class="btn btn-secondary" 
+          (click)="nextPage()" 
+          [disabled]="currentPage === totalPages"
+          [class.btn-ghost]="currentPage === totalPages"
+        >
+          Siguiente
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <!-- Información de paginación -->
+      <div class="pagination-info">
+        <p class="text-caption text-center">
+          Mostrando <strong>{{ paginatedData.length }}</strong> registros de <strong>{{ totalItems }}</strong> total
+          • Página <strong>{{ currentPage }}</strong> de <strong>{{ totalPages }}</strong>
+        </p>
+      </div>
+    </section>
+
+    <!-- Mensaje cuando no hay datos -->
+    <section *ngIf="!isLoading && !errorMessage && allData.length === 0" class="empty-state animate-slide-up">
+      <div class="empty-state-content text-center">
+        <div class="icon-wrapper-lg mx-auto mb-6">
+          <i class="fas fa-inbox"></i>
+        </div>
+        <h3 class="text-h4">No hay datos disponibles</h3>
+        <p class="text-body-lg mb-6">No se encontraron registros de asistencia en el sistema.</p>
+        <div class="empty-state-actions">
+          <button class="btn btn-primary btn-lg" (click)="goToUpload()">
+            <i class="fas fa-upload"></i>
+            Subir archivo DATA.TXT
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
