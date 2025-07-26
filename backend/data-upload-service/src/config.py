@@ -39,37 +39,15 @@ class DevelopmentConfig(Config):
     """Configuración para desarrollo"""
     DEBUG = True
     TESTING = False
-    
-    @property
-    def SQLALCHEMY_ENGINE_OPTIONS(self):
-        """Engine options adaptados al tipo de base de datos"""
-        db_uri = self.SQLALCHEMY_DATABASE_URI
-        if db_uri and 'sqlite' in db_uri:
-            # SQLite no soporta pool_timeout ni max_overflow
-            return {
-                'pool_pre_ping': True,
-                'pool_recycle': 300
-            }
-        return super().SQLALCHEMY_ENGINE_OPTIONS
 
 class ProductionConfig(Config):
     """Configuración para producción"""
     DEBUG = False
     TESTING = False
     
-    @property
-    def SQLALCHEMY_DATABASE_URI(self):
-        db_url = os.getenv('DATABASE_URL')
-        if not db_url and os.getenv('FLASK_ENV') == 'production':
-            raise ValueError("DATABASE_URL environment variable is required in production")
-        return db_url or super().SQLALCHEMY_DATABASE_URI
-    
-    @property
-    def SECRET_KEY(self):
-        secret = os.getenv('SECRET_KEY')
-        if (not secret or secret == 'dev-secret-key-change-in-production') and os.getenv('FLASK_ENV') == 'production':
-            raise ValueError("SECRET_KEY environment variable is required in production")
-        return secret or super().SECRET_KEY
+    # Sobrescribir con variables de entorno si están disponibles
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'mysql+pymysql://root:password@localhost:3306/mueblesstgo_data')
+    SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
 
 class TestingConfig(Config):
     """Configuración para testing"""
