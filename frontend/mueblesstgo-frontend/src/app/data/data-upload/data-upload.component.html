@@ -1,0 +1,21 @@
+<div class="header-bar">
+  <span class="logo">MueblesStgo</span>
+  <div>
+    <button class="menu-btn" (click)="volverMenu()">Volver al menú principal</button>
+    <button class="menu-btn" style="margin-left: 1rem;" routerLink="/data-last">Ver el último Data.txt cargado</button>
+  </div>
+</div>
+
+<h1 style="margin-left: 1rem;">Cargar DATA.TXT</h1>
+
+<div class="upload-box">
+  <h2>Cargar el archivo de datos</h2>
+  <input type="file" (change)="onFileSelected($event)" accept=".txt" />
+  <button class="upload-btn" (click)="onUpload()">Cargar el archivo a la Base de Datos</button>
+</div>
+
+<hr />
+
+<div class="note-box">
+  <span>Recuerde que el nombre del archivo debe ser "Data.txt"!</span>
+</div>

@@ -1,0 +1,86 @@
+/* Fondo general */
+body {
+  background-color: #fafafa;
+}
+
+/* Encabezado principal */
+h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Contenedor de la tabla */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Tabla de empleados */
+.table {
+  margin-top: 2rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  border-radius: 8px;
+  overflow: hidden;
+  width: 90%;
+  max-width: 800px;
+}
+
+/* Encabezado de la tabla */
+.table thead th {
+  background-color: #4e8a6c;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  font-size: 1.1rem;
+}
+
+/* Filas alternas */
+.table tbody tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+/* Celdas */
+.table td, .table th {
+  border: 1px solid #c2c2c2;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+/* Botón de menú principal */
+.menu-btn {
+  background-color: #2c3e3e;
+  color: #fff;
+  border-radius: 20px;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  font-size: 1rem;
+  float: right;
+  margin: 1rem;
+  transition: background 0.2s;
+}
+
+.menu-btn:hover {
+  background-color: #4e8a6c;
+}
+
+/* Banner superior */
+.header-bar {
+  background-color: #2c3e3e;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-bar .logo {
+  font-family: 'Pacifico', cursive;
+  color: #fff;
+  font-size: 2.5rem;
+  margin-left: 2rem;
+}

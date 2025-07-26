@@ -1,0 +1,32 @@
+<div class="header-bar">
+  <span class="logo">MueblesStgo</span>
+  <div>
+    <button class="menu-btn" (click)="volverMenu()">Volver al menú principal</button>
+  </div>
+</div>
+
+<div class="container mt-4">
+  <h2>Lista de Empleados</h2>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>RUT</th>
+        <th>Apellidos</th>
+        <th>Nombres</th>
+        <th>Fecha Nacimiento</th>
+        <th>Categoría</th>
+        <th>Fecha Ingreso</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let empleado of empleados">
+        <td>{{ empleado.rut }}</td>
+        <td>{{ empleado.apellidos }}</td>
+        <td>{{ empleado.nombres }}</td>
+        <td>{{ empleado.fecha_nacimiento }}</td>
+        <td>{{ empleado.categoria }}</td>
+        <td>{{ empleado.fecha_ingreso }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
